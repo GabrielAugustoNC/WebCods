@@ -1,0 +1,136 @@
+<style>
+    div.container2 {
+        width: 100%;
+        border: 1px solid #90c92e;
+    }
+
+    header {
+        padding: 1em;
+        color: #90c92e;
+        background-color: #053a1d;
+        clear: left;
+        text-align: center;
+    }
+
+    .body-project {
+        padding: 1em;
+        color: black;
+        background-color: white;
+        clear: left;
+        text-align: center;
+    }
+
+    .body-project-left {
+        padding: 1em;
+        color: black;
+        background-color: white;
+        clear: left;
+        text-align: left;
+    }
+
+    .input-1 {
+        width: 100%;
+        min-height: 45px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .body-right-green {
+        font-family: 'Uni Sans'!important;
+        font-size: 16px!important;
+        text-align: right;
+        color: #0db14b;
+        padding-left: 85%;
+    }
+
+    h1 {
+        color: #90c92e;
+        text-align: left;
+        font-family: 'Uni Sans'!important;
+        font-size: 20px!important;
+    }
+
+    .right {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        margin-left: 10px;
+        border: solid #0db14b;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+    }
+</style>
+<script type="text/javascript">
+    function trataElementos(element, condition) {
+
+        var elemento = element.split(',');
+
+        var verificador = 0;
+
+        for (var i = 0; i < 100; i++) {
+            if (elemento[i] == null || elemento[i] == "") {
+                verificador = i;
+
+                i = 100;
+            }
+        }
+
+        for (var i = 0; i < verificador; i++) {
+
+            condition == true ? document.getElementById(elemento[i]).style.visibility = "hidden" : document.getElementById(elemento[i]).style.visibility = "visible";
+
+        }
+
+        if (condition == true) {
+            limpaModal();
+        }
+
+    }
+
+    function limpaModal() {
+
+        document.getElementById('solucaoid').value = "Selecionar solução que deseja integrar";
+        document.getElementById('nomeApp').value = "";
+        document.getElementById('URLapp').value = "";
+    }
+
+</script>
+
+<div class="container2">
+
+    <header>
+        <h1 onclick="trataElementos('elementoSolucao,modalNovaSolucao',true)">Qual solução deseja integrar?</h1>
+    </header>
+
+    <div class="body-project-left">
+        <form action="">
+            <select class="input-1" id="solucaoid" name="solucao" onchange="trataElementos('elementoSolucao',false);">
+                    <option value="default">Selecionar solução que deseja integrar</option>
+                    <option value="E-Commerce">E-Commerce</option>
+                </select>
+
+            <br /><br />
+
+            <div id="elementoSolucao" style="visibility: hidden">
+                <label for="fname" class="label-default">Nome do site/Aplicativo</label>
+                <input class="input-1" type="text" id="nomeApp" name="firstname" placeholder="">
+
+                <br /><br />
+                <label for="lname" class="label-default">Qual a URL?</label>
+                <input class="input-1" type="text" id="URLapp" name="lastname" placeholder="Ex.: stone.com.br">
+
+                <br /><br />
+                <span id="project_details" class="body-right-green">Continuar<i class="right"></i></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<p style="text-align: center;"><a href="/devcenter/login"><span style="font-size: 16px; font-family: 'Uni Sans';">Clique aqui para reenviarmos</span></a></p>

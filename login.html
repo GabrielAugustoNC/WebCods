@@ -1,0 +1,189 @@
+<style type="text/css">
+    .w3-btn,
+    .w3-btn:link,
+    .w3-btn:visited {
+        color: #154b1f;
+        background-color: #93cc2f;
+        font-family: 'Uni Sans';
+        font-size: 16px;
+    }
+
+    .w3-teal,
+    .w3-hover-teal:hover {
+        color: #154b1f!important;
+        background-color: #93cc2f!important;
+        font-family: 'Uni Sans'!important;
+        font-size: 16px!important;
+        background: url("/devcenter/assets/icon-arrow-login.png") no-repeat 90% center;
+        padding-right: 110px;
+    }
+
+    .w3-block {
+        display: block;
+        width: 100%;
+    }
+
+    .w3-btn,
+    .w3-button {
+        border: none;
+        display: inline-block;
+        outline: 0;
+        padding: 10px 16px;
+        vertical-align: middle;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        background-color: inherit;
+        text-align: left;
+        padding-left: 10%;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .input-text-user {
+        background: url("/devcenter/assets/icon-login.png") no-repeat 94% center;
+        border-radius: 0px;
+    }
+
+    .input-text-password {
+        background: url("/devcenter/assets/icon-senha.png") no-repeat 94% center;
+        border-radius: 0px;
+    }
+
+    .modaldiv {
+        height: 100%;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        background-color: rgba(0, 0, 0, 0.7);
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modalcontent {
+        position: relative;
+        width: 60%;
+        font-family: 'Uni Sans Bold';
+        min-height: 20%;
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-right: 10px;
+        background-color: #93cc2f;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #999;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: 6px;
+        outline: 0;
+        color: #094028;
+        -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+        box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    }
+    /* The Close Button */
+
+    .close {
+        color: #094028;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+
+<script type="text/javascript">
+    function doLogin(usuario, senha) {
+        if (usuario && senha) {
+            document.getElementById('loading').style.display = "flex";
+            var url = "/devcenter/actions/login.php?email=" + usuario +
+                "&senha=" + senha;
+            httpRequest("GET", url, true);
+        }
+    }
+
+    function trataSucesso() {
+        var resposta = ajax.responseText;
+
+        switch (resposta) {
+            case "FalhaLogin":
+                document.getElementById('id-modal').style.display = "flex";
+                document.getElementById('alert').innerHTML = "Login ou senha inválidos!";
+                document.getElementById('loading').style.display = "none";
+                break;
+            case "ErroLogin":
+                document.getElementById('id-modal').style.display = "flex";
+                document.getElementById('alert').innerHTML = "Erro ao efetuar o processo de login!";
+                document.getElementById('loading').style.display = "none";
+                break;
+            case "LoginOK":
+                window.location = "dashboard";
+                break;
+        }
+    }
+
+    function modalClose() {
+        document.getElementById('id-modal').style.display = "none";
+    }
+
+    function trataNaoEncontrado() {
+        alert("O arquivo alvo desta requisição não pode ser encontrado!");
+    }
+
+    function trataErroInterno() {
+        alert("Servidor com erro interno!");
+    }
+
+</script>
+
+<div>
+    <script type="text/javascript" src="/devcenter/actions/js/ajax.js"></script>
+    <div id="loading" class="modaldiv" style="display: none;"><img style="width: 100px; height: 100px;" src="/devcenter/assets/loading.gif" /></div>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- Modal -->
+    <div class="modaldiv" id="id-modal" style="display: none;">
+
+        <!-- Modal content -->
+        <div class="modalcontent">
+            <span class="close" onclick="modalClose();">×</span>
+            <p id="alert"></p>
+        </div>
+    </div>
+
+    <form action="javascript:void%200" onSubmit="doLogin(document.getElementById('email').value, document.getElementById('senha').value)">
+
+        <span style="font-family: 'Uni Sans'; font-size: 15px; color: #000000">Usu&aacute;rio</span>
+        <br />
+
+        <span>
+        	<input class="input-text-user" type="text" style="border-radius:0px;" placeholder="E-mail" name="email" id="email">
+        </span><br /><br />
+
+        <span>
+        <span style="font-family: 'Uni Sans'; font-size: 15px; color: #000000">Senha</span>
+        <br />
+
+        <span>
+        	<input class="input-text-password" type="password" style="border-radius:0px;" placeholder="Digite aqui sua senha" name="senha" id="senha">
+        </span><br />
+
+        <span>
+        	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a href="/devcenter/recuperacaosenha"><font face = "Uni Sans" size="3" color = "#34b959">Esqueceu sua senha?</font></a>
+        </span><br /><br />
+
+
+
+        <p><button class="w3-button w3-block w3-teal" type="submit"><a href="/devcenter/login">VOLTAR PARA O LOGIN<a/></button></p>
+
+        <p><a href="/devcenter/login"><button class="w3-button w3-block w3-teal" type="submit">VOLTAR PARA O LOGIN</button><a/></p>
+
+    </form>
+</div>

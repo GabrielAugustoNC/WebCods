@@ -1,0 +1,426 @@
+<!--_________________________Tela de Credenciamento (Ajuste Layout)_________________________-->
+
+<!-- CSS - Classes -->
+<style type="text/css">
+    .w3-btn,
+    .w3-btn:link,
+    .w3-btn:visited {
+        color: #154b1f;
+        background-color: #93cc2f;
+        font-family: 'Uni Sans';
+        font-size: 16px;
+    }
+
+    .w3-teal,
+    .w3-hover-teal:hover {
+        color: #154b1f!important;
+        background-color: #93cc2f!important;
+        font-family: 'Uni Sans Bold'!important;
+        font-size: 12px!important;
+        background: url("/devcenter/assets/icon-arrow-login.png") no-repeat 90% center;
+        padding-right: 110px;
+    }
+
+    .w3-block {
+        display: block;
+        width: 80%;
+        margin-left: 10%;
+    }
+
+    .w3-btn,
+    .w3-button {
+        border: none;
+        display: inline-block;
+        outline: 0;
+        padding: 10px 16px;
+        vertical-align: middle;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        background-color: inherit;
+        text-align: left;
+        padding-left: 10%;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .defaultSenha {
+        width: 90%;
+        height: 2px;
+        background-color: #e8e8e8;
+    }
+
+    .forcaSenha {
+        width: 90%;
+        height: 2px;
+        background-color: #99C55D;
+    }
+
+    .table {
+        width: 95%;
+        text-align: left;
+        margin-left: 10px;
+        visibility: none;
+    }
+
+    .td {
+        width: 5%;
+        text-align: left;
+    }
+
+    .td-right {
+        width: 20%;
+        text-align: center;
+    }
+
+    .confirmacao {
+        text-align: right;
+        padding-left: 60%;
+    }
+
+    .alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+        padding-left: 5px;
+    }
+
+    .span-format {
+        font-family: 'Uni Sans';
+        font-size: 15px;
+        color: #000000;
+        margin-left: 10%;
+    }
+
+    .span-font {
+        font-family: 'Uni Sans';
+    }
+
+    .input-text-user {
+        background: url("/devcenter/assets/icon-login.png") no-repeat 94% center;
+        border-radius: 0px;
+    }
+
+    .input-text-password {
+        background: url("/devcenter/assets/icon-senha.png") no-repeat 94% center;
+        border-radius: 0px;
+    }
+
+    .modaldiv {
+        height: 100%;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        background-color: rgba(0, 0, 0, 0.7);
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modalcontent {
+        position: relative;
+        width: 60%;
+        font-family: 'Uni Sans Bold';
+        min-height: 20%;
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-right: 10px;
+        background-color: #93cc2f;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #999;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: 6px;
+        outline: 0;
+        color: #094028;
+        -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+        box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    }
+    /* The Close Button */
+
+    .close {
+        color: #094028;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+
+
+<!-- Scripts - Métodos e Funções -->
+
+<script type="text/javascript">
+    // Validar Email (Teste)
+
+    function validacaoEmail(value) {
+
+        usuario = value.substring(0, value.indexOf("@"));
+        dominio = value.substring(value.indexOf("@") + 1, value.length);
+
+        if ((usuario.length >= 1) && (dominio.length >= 3) && (usuario.search("@") == -1) && (dominio.search("@") == -1) &&
+            (usuario.search(" ") == -1) && (dominio.search(" ") == -1) && (dominio.search(".") != -1) &&
+            (dominio.indexOf(".") >= 1) && (dominio.lastIndexOf(".") < dominio.length - 1)) {
+
+            return true;
+        }
+
+        else {
+            return false;
+        }
+    }
+
+    // Validar CNPJ
+    function validarCNPJ(cnpj) {
+
+        cnpj = cnpj.replace(/[^\d]+/g, '');
+
+        if (cnpj == '') return false;
+
+        if (cnpj.length != 14)
+            return false;
+
+        // Elimina CNPJs invalidos conhecidos
+        if (cnpj == "00000000000000" ||
+            cnpj == "11111111111111" ||
+            cnpj == "22222222222222" ||
+            cnpj == "33333333333333" ||
+            cnpj == "44444444444444" ||
+            cnpj == "55555555555555" ||
+            cnpj == "66666666666666" ||
+            cnpj == "77777777777777" ||
+            cnpj == "88888888888888" ||
+            cnpj == "99999999999999")
+            return false;
+
+        // Valida DVs
+        tamanho = cnpj.length - 2
+        numeros = cnpj.substring(0, tamanho);
+        digitos = cnpj.substring(tamanho);
+        soma = 0;
+        pos = tamanho - 7;
+        for (i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2)
+                pos = 9;
+        }
+        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(0))
+            return false;
+
+        tamanho = tamanho + 1;
+        numeros = cnpj.substring(0, tamanho);
+        soma = 0;
+        pos = tamanho - 7;
+        for (i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2)
+                pos = 9;
+        }
+        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(1))
+            return false;
+
+        return true;
+
+    }
+
+    // Validação final e envio dos dados para o servidor 	
+    function Submit() {
+
+        // Atributos
+        var cnpj = document.getElementById('cnpj').value;
+        var email = document.getElementById('email').value;
+        var listaMsgmError = new Array();
+
+        // Result Funções
+        var emailValido = validacaoEmail(email);
+        var cnpjValido = validarCNPJ(cnpj);
+
+        // Verificador de Aprovação
+        var validator = 0;
+
+        if (cnpjValido == false) {
+            document.getElementById('cnpj-span').style = "color: red;";
+            document.getElementById('cnpj').style = "border-radius:0px;border-color: red;";
+            document.getElementById('cnpj').value = "";
+
+            listaMsgmError.push('CNPJ Inválido!');
+
+            validator = 1;
+
+        }
+
+        if (emailValido == false) {
+            document.getElementById('email-span').style = "color: red;";
+            document.getElementById('email').style = "border-radius:0px;border-color: red;";
+            document.getElementById('email').value = "";
+
+            listaMsgmError.push('Email Inválido!');
+
+            validator = 1;
+        }
+
+        if (validator == 1) {
+
+            // Listagem de Erros 
+
+            var Warnings = "";
+
+            for (var value in listaMsgmError) {
+                Warnings += "<br />" + listaMsgmError[value];
+            }
+
+            document.getElementById('msgmError').innerHTML = Warnings;
+            document.getElementById('divError').style.visibility = "visible";
+
+            // Redefinição Divs Força Senha
+            document.getElementById('forcaSenha1').className = "defaultSenha";
+            document.getElementById('forcaSenha2').className = "defaultSenha";
+            document.getElementById('forcaSenha3').className = "defaultSenha";
+            document.getElementById('forcaSenha4').className = "defaultSenha";
+            document.getElementById('forcaSenha5').className = "defaultSenha";
+
+            document.getElementById('combinacaoFeedback').innerHTML = "<font color=#e8e8e8 size='1'>Digite uma Senha</font>";
+        }
+
+    }
+
+    // Mascara CNPJ
+    function maskCNPJ(id) {
+
+        var cnpjOrigin = document.getElementById(id).value;
+
+        var cnpj = cnpjOrigin;
+
+
+        if (cnpj.length == 2 || cnpj.length == 6) {
+            cnpj = cnpj + ".";
+        }
+
+        if (cnpj.length == 10) {
+            cnpj = cnpj + "/";
+        }
+
+        if (cnpj.length == 15) {
+            cnpj = cnpj + "-";
+        }
+
+        if (cnpj.length > 15) {
+
+            cnpj = cnpj.substring(0, 2) + "." + cnpj.substring(3, 6) + "." + cnpj.substring(7, 10) + "/" + cnpj.substring(11, 15) + "-" + cnpj.substring(16, 18);
+        }
+
+        document.getElementById(id).value = cnpj;
+    }
+
+    // Campos Default
+    function limpaText(id) {
+        id == "email" ? limpaSpan('email-span') : limpaSpan('cnpj-span');
+        document.getElementById(id).style = "border-radius:0px;";
+        document.getElementById('divError').style.visibility = "hidden";
+
+        limpaSpan();
+    }
+
+    function limpaSpan(id) {
+        document.getElementById(id).style = "";
+    }
+
+    // __________________________________ AJAX __________________________________ //
+    /*
+    /devcenter/actions/verifica_email_cnpj.php?email=w.santos@cinq.com.br&cnpj=08.028.787/0001-02
+    */
+    function doSend(email, cnpj) {
+        if (email && cnpj) {
+            document.getElementById('loading').style.display = "flex";
+            var url = "/devcenter/actions/verifica_email_cnpj.php?email=" + email + "&cnpj=" + cnpj;
+            httpRequest("GET", url, true);
+        } else {
+            Submit();
+        }
+    }
+
+    function trataSucesso() {
+        var resposta = ajax.responseText;
+
+        switch (resposta) {
+            case "EmailInvalido":
+                document.getElementById('id-modal').style.display = "flex";
+                document.getElementById('alert').innerHTML = "Dados Incorretos!";
+                document.getElementById('loading').style.display = "none";
+                Submit();
+                break;
+            case "EmailValido":
+                window.location = "confirmacaoemailsenha";
+                break;
+        }
+    }
+
+    function modalClose() {
+        document.getElementById('id-modal').style.display = "none";
+    }
+
+    function trataNaoEncontrado() {
+        alert("O arquivo alvo desta requisição não pode ser encontrado!");
+    }
+
+    function trataErroInterno() {
+        alert("Servidor com erro interno!");
+    }
+
+</script>
+
+
+<!-- HTML - Página de Credênciamento -->
+<script type="text/javascript" src="/devcenter/actions/js/ajax.js"></script>
+<div id="loading" class="modaldiv" style="display: none;"><img style="width: 100px; height: 100px;" src="/devcenter/assets/loading.gif" /></div>
+
+<!-- Modal -->
+<div class="modaldiv" id="id-modal" style="display: none;">
+
+    <!-- Modal content -->
+    <div class="modalcontent">
+        <span class="close" onclick="modalClose();">×</span>
+        <p id="alert"></p>
+    </div>
+
+</div>
+<div>
+    <form method="post" id="FormCredenciamento" action="javascript:void%200" onSubmit="doSend(document.getElementById('email').value, document.getElementById('cnpj').value)">
+
+
+        <span class="span-format" id="email-span">E-mail</span>
+        <br />
+
+        <span>
+        	<input type="text" class = "input-text-user" style="border-radius:0px;" placeholder="E-mail" name="email" id="email" onclick="limpaText('email');">
+        </span><br /><br />
+
+        <span class="span-format" id="cnpj-span">CNPJ</span>
+        <br />
+
+        <span>
+        	<input type="text" style="border-radius:0px;" placeholder="00.000.000/0000-00" name="cnpj" id="cnpj" onkeyup="maskCNPJ('cnpj');" onblur="maskCNPJ('cnpj');" onclick="limpaText('cnpj');" maxlength = "18">
+        </span><br /><br />
+
+
+        <div class="alert alert-danger" style="visibility: hidden" id="divError">
+            <strong class="span-font">Atenção!</strong>
+            <span id="msgmError" class="span-font">Error<span>
+  		</div>
+  		
+  		<br />
+
+        <p><button type="submit" class="w3-button w3-block w3-teal">ENVIAR</button></p>
+
+
+    </form>
+</div>

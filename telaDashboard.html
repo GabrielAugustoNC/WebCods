@@ -1,0 +1,497 @@
+<!-- Body - Dashboard Screem -->
+<style>
+    div.container {
+        width: 75%;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    }
+
+    .container-modal {
+        margin-top: 10%;
+        margin-left: 25%;
+        position: fixed;
+        width: 50%;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    header {
+        padding: 1em;
+        color: #90c92e;
+        background-color: #053a1d;
+        clear: left;
+        text-align: center;
+    }
+
+    .span-geral {
+        text-align: left;
+        font-family: 'Uni Sans'!important;
+    }
+
+    .span-bold {
+        text-align: left;
+        font-family: 'Uni Sans Bold'!important;
+    }
+
+    .span-gray-dark {
+        color: #696969;
+        font-size: 17px!important;
+    }
+
+    .span-h1 {
+        color: #90c92e;
+        text-align: left;
+        font-family: 'Uni Sans'!important;
+        font-size: 15px!important;
+        padding-left: 64%;
+    }
+
+    .span-h1-modal {
+        color: #90c92e;
+        text-align: left;
+        font-family: 'Uni Sans'!important;
+        font-size: 15px!important;
+        padding-left: 64%;
+    }
+
+    h1 {
+        color: #90c92e;
+        text-align: left;
+        font-family: 'Uni Sans'!important;
+        font-size: 20px!important;
+        padding-left: 1%;
+    }
+
+    .h1-modal {
+        color: #90c92e;
+        text-align: left;
+        font-family: 'Uni Sans'!important;
+        font-size: 20px!important;
+        padding-left: 1%;
+    }
+
+
+    .body-project {
+        color: black;
+        background-color: white;
+        clear: left;
+        text-align: center;
+        max-height: 80px;
+        padding: 20px;
+    }
+
+    .body-project-modal {
+        color: black;
+        background-color: white;
+        clear: left;
+        text-align: center;
+        padding: 20px;
+        padding-bottom: 0px;
+    }
+
+    .body-left {
+        font-family: 'Uni Sans'!important;
+        font-size: 16px!important;
+        text-align: left;
+        color: #0db14b;
+        padding-right: 10%;
+    }
+
+    .body-right-green {
+        font-family: 'Uni Sans'!important;
+        font-size: 16px!important;
+        text-align: right;
+        color: #0db14b;
+        padding-left: 75%;
+    }
+
+    .icon-left-excluir {
+        background: url("/devcenter/assets/icon-delete.png") no-repeat left;
+        font-family: 'Uni Sans'!important;
+        font-size: 16px!important;
+        padding-bottom: 1px;
+        text-align: left;
+        color: #a9aaae;
+        padding-left: 10%;
+    }
+
+    .nav {
+        float: left;
+        max-width: 160px;
+        margin: 0;
+        padding: 1em;
+    }
+
+    nav ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    nav ul a {
+        text-decoration: none;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    .td-description {
+        width: 30%;
+        font-family: 'Uni Sans'!important;
+        font-size: 16px!important;
+        text-align: left;
+        border: none;
+        color: #a9aaae;
+    }
+
+    .td-body {
+        width: 20%;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+    }
+
+    .right {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        margin-left: 10px;
+        border: solid #0db14b;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+    }
+
+    .dashed {
+        border-top-style: dashed;
+        border-left-style: dashed;
+        border-right-style: dashed;
+        border-bottom-style: dashed;
+        border-width: 3px;
+        border-color: #e0e0e2;
+        width: 80%;
+        height: 100px;
+        margin-left: 10%;
+        background-color: white;
+        font-family: 'Uni Sans'!important;
+        font-size: 10pt;
+    }
+
+    .dashed-span {
+        text-align: center;
+        padding-top: 4%;
+        padding-bottom: 2%;
+        background: url("/devcenter/assets/icon-adicionar.png") no-repeat center;
+        color: #e0e0e2;
+        font-family: 'Uni Sans';
+        font-size: 20px;
+    }
+
+    .dashed-span-2 {
+        text-align: center;
+        padding-top: 2%;
+        padding-bottom: 2%;
+        color: #e0e0e2;
+        font-family: 'Uni Sans';
+        font-size: 20px;
+    }
+
+    .label-default {
+        font-family: 'Uni Sans'!important;
+        font-size: 16px!important;
+        text-align: left;
+        color: black;
+        padding-right: 10%;
+        padding-left: 1%;
+    }
+
+    .modaldiv {
+        height: 100%;
+        width: 100%;
+        z-index: 9999;
+        top: 0px;
+        left: 0px;
+        background-color: rgba(0, 0, 0, 0.7);
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modalcontent {
+        margin-bottom: 20%;
+        position: relative;
+        width: 75%;
+        font-family: 'Uni Sans Bold';
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #999;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: 6px;
+        outline: 0;
+        color: #094028;
+        -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+        box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    }
+
+    .close {
+        color: #FFF;
+        float: right;
+        font-size: 20px;
+        padding-right: 10px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #90c92e;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .td-border-line {
+        border-bottom: 2px solid #e9eeec;
+        padding-bottom: 1px;
+    }
+</style>
+
+<script type="text/javascript">
+    function trataElementos(element, condition) {
+
+        var elemento = element.split(',');
+
+        var verificador = 0;
+
+        for (var i = 0; i < 100; i++) {
+            if (elemento[i] == null || elemento[i] == "") {
+                verificador = i;
+
+                i = 100;
+            }
+        }
+
+        for (var i = 0; i < verificador; i++) {
+
+            condition == true ? document.getElementById(elemento[i]).style.visibility = "hidden" : document.getElementById(elemento[i]).style.visibility = "visible";
+
+        }
+
+        if (condition == true) {
+            limpaModal();
+        }
+
+    }
+
+    function limpaModal() {
+
+        document.getElementById('solucaoid').value = "Selecionar solução que deseja integrar";
+        document.getElementById('nomeApp').value = "";
+        document.getElementById('URLapp').value = "";
+    }
+
+    function dataCriacaoProjeto(id) {
+
+        var data = document.getElementById(id);
+        data.innerHTML = "&emsp; 00/00/0000";
+
+    }
+
+    function moreDetails(id, status) {
+        var modal = document.getElementById(id);
+
+        status == "closed" ? modal.style = "display: flex;" : modal.style = "display: none;";
+
+    }
+
+</script>
+
+<!-- PAGE - DASHBORD STONE -->
+
+
+<div class="container">
+
+    <header>
+        <h1>Projeto SDK Android<span class="span-h1">DATA DE CRIAÇÃO:<span id="dataCriacao"></span>&ensp; 00/00/0000</span>
+        </h1>
+    </header>
+
+    <div class="body-project">
+
+        <table>
+            <tr>
+                <td class="td-description">
+                    <span id="project_description" class="span-geral">Descrição do Projeto</span>
+                </td>
+
+                <td class="td-body">
+                    <span id="project_delete" class="icon-left-excluir">EXCLUIR PROJETO</span>
+                </td>
+
+                <td class="td-body">
+                    <a><span id="project_documentation" class="body-left">DOCUMENTAÇÃO<i class="right"></i></span></a>
+                </td>
+
+                <td class="td-body" onclick="modal_On();">
+                    <!-- /devcenter/credenciamentoempresa/ -->
+                    <span id="project_details" class="body-left">MAIS DETALHES<i class="right"></i></span>
+
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<br /><br />
+
+<script>
+    function modal_On() {
+        var modal = document.getElementById('moreDetails');
+
+        modal.className = "modal fade in";
+        modal.style = "display: block; padding-right: 17px;";
+
+    }
+    function modal_Off() {
+        var modal = document.getElementById('moreDetails');
+
+        modal.className = "modal fade";
+        modal.style = "display: none;";
+    }
+    function checkBox_controller(id) {
+        var checkbox = document.getElementById(id);
+
+        checkbox.className != null || checkbox.className != "" ? checkbox.className = "label-span" : checkbox.className = "";
+
+    }
+
+    function infoModal_MaisDetalhes() {
+        var descricao = document.getElementById('descricao');
+        var tecnologia = document.getElementById('tecnologia');
+        var stoneCode = document.getElementById('stoneCode');
+        var sak = document.getElementById('sak');
+        var inicioProjeto = document.getElementById('inicioProjeto');
+        var ambienteHomologacao = document.getElementById('ambienteHomolog');
+        var url = document.getElementById('url');
+
+
+        // Implementar Função para carregar os dados nos spans
+    }
+
+</script>
+<style>
+    .td-inicio {
+        width: 20%;
+        border-bottom: 2px solid #e9eeec;
+        padding-bottom: 1px;
+    }
+
+    .td-content {
+        width: 40%;
+        border-bottom: 2px solid #e9eeec;
+        padding-bottom: 1px;
+    }
+
+    .td-content-last {
+        width: 40%;
+        border-bottom: 2px solid #e9eeec;
+        border-left: 2px solid #e9eeec;
+        padding-bottom: 1px;
+    }
+
+    .td-inicio-button {
+        width: 20%;
+        border: none;
+        padding-bottom: 15px;
+        padding-top: 3%;
+    }
+
+    .td-content-last-button {
+        width: 40%;
+        border: none;
+        padding-bottom: 15px;
+        padding-left: 35%;
+        padding-top: 3%;
+    }
+
+    .tr-last {
+        min-height: 300px;
+    }
+
+    .span-hora-inicio {
+        color: #90c92e;
+        font-size: 18px;
+        font-family: 'Uni Sans';
+    }
+
+    .span-informacoes {
+        font-size: 12px;
+        font-family: 'Uni Sans';
+    }
+</style>
+
+
+<div class="modal fade" id="moreDetails" tabindex="-1" role="dialog" aria-labelledby="popup-767-label" style="display: none;">
+    <!-- <div class="modal-dialog" role="document"> -->
+
+    <!-- Modal content -->
+
+    <div class="modalcontent">
+        <div class="container-modal">
+            <header>
+                <h1>Projeto SDK Android<span class="span-h1"><i class="close" onclick="modal_Off();">x</i></span></h1>
+            </header>
+            <div class="body-project-modal">
+                <table>
+                    <tr>
+                        <td class="td-inicio" colspan="2">
+                            <span class="span-bold span-gray-dark">Descrição:</span> &emsp;&emsp;&ensp;&ensp;&emsp;
+                            <span id="descricao" class="span-informacoes span-gray-dark"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-inicio" colspan="2">
+                            <span class="span-bold span-gray-dark">Tecnologia:</span> &emsp;&emsp;&ensp;&emsp;
+                            <span id="tecnologia" class="span-informacoes span-gray-dark"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-inicio" colspan="2">
+                            <span class="span-bold span-gray-dark">Stone Code:</span> &emsp;&emsp;&nbsp;&emsp;
+                            <span id="stoneCode" class="span-informacoes span-gray-dark"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-inicio" colspan="2">
+                            <span class="span-bold span-gray-dark">SAK:</span> &emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;
+                            <span id="sak" class="span-informacoes span-gray-dark"></span>
+                        </td>
+                    </tr>
+                    <tr class="tr-last">
+
+                        <td class="td-inicio">
+                            <span class="span-bold span-gray-dark">Início do projeto:</span>
+                            <br />
+                            <span id="inicioProjeto" class="span-hora-inicio"></span>
+                        </td>
+
+                        <td class="td-content-last">
+                            <span class="span-bold span-gray-dark">Ambiente de homologação:</span>&emsp;<span id="ambienteHomolog"
+                                class="span-informacoes span-gray-dark"></span>
+                            <br /><br />
+                            <span class="span-bold span-gray-dark">URL:</span>&emsp;<span id="url" class="span-informacoes span-gray-dark"></span>
+                            <br /><br />
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-inicio-button"><span id="project_delete" class="icon-left-excluir">EXCLUIR PROJETO</span></td>
+                        <td class="td-content-last-button">
+                            <a href="/devcenter/credenciamentoempresa/"><span id="project_documentation" class="body-left">SANDBOX<i class="right"></i></span></a>
+                            <span id="project_documentation" class="body-left">DOCUMENTAÇÃO<i class="right"></i></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+</div>

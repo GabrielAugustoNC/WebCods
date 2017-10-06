@@ -1,0 +1,469 @@
+<!--_________________________Tela de Credenciamento (Ajuste Layout)_________________________-->
+
+<!-- CSS - Classes -->
+<style type="text/css">
+    .w3-btn,
+    .w3-btn:link,
+    .w3-btn:visited {
+        color: #154b1f;
+        background-color: #93cc2f;
+        font-family: 'Uni Sans';
+        font-size: 16px;
+    }
+
+    .w3-teal,
+    .w3-hover-teal:hover {
+        color: #154b1f!important;
+        background-color: #93cc2f!important;
+        font-family: 'Uni Sans Bold'!important;
+        font-size: 12px!important;
+        background: url("/devcenter/assets/icon-arrow-login.png") no-repeat 90% center;
+        padding-right: 110px;
+    }
+
+    .w3-block {
+        display: block;
+        width: 80%;
+        margin-left: 10%;
+    }
+
+    .w3-btn,
+    .w3-button {
+        border: none;
+        display: inline-block;
+        outline: 0;
+        padding: 10px 16px;
+        vertical-align: middle;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        background-color: inherit;
+        text-align: left;
+        padding-left: 10%;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .defaultSenha {
+        width: 90%;
+        height: 2px;
+        background-color: #e8e8e8;
+    }
+
+    .forcaSenha {
+        width: 90%;
+        height: 2px;
+        background-color: #99C55D;
+    }
+
+    .table {
+        width: 95%;
+        text-align: left;
+        margin-left: 10%;
+        visibility: none;
+        margin-bottom: 0px;
+    }
+
+    .td {
+        width: 5%;
+        text-align: left;
+        border-bottom: none;
+    }
+
+    .td-right {
+        width: 20%;
+        text-align: left;
+        border-bottom: none;
+        padding-right: 20px;
+    }
+
+    .confirmacao {
+        text-align: right;
+        padding-left: 60%;
+    }
+
+    .alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+        padding-left: 5px;
+    }
+
+    .span-format {
+        font-family: 'Uni Sans';
+        font-size: 15px;
+        color: #000000;
+        margin-left: 10%;
+    }
+
+    .span-font {
+        font-family: 'Uni Sans';
+    }
+
+    .input-text-user {
+        background: url("/devcenter/assets/icon-login.png") no-repeat 94% center;
+        border-radius: 0px;
+    }
+
+    .input-text-password {
+        background: url("/devcenter/assets/icon-senha.png") no-repeat 94% center;
+        border-radius: 0px;
+        width: 80%;
+        margin-left: 10%;
+    }
+</style>
+
+
+
+<!-- Scripts - Métodos e Funções -->
+
+<script type="text/javascript">
+    // Validar Email (Teste)
+
+    function validacaoEmail(value) {
+
+        usuario = value.substring(0, value.indexOf("@"));
+        dominio = value.substring(value.indexOf("@") + 1, value.length);
+
+        if ((usuario.length >= 1) && (dominio.length >= 3) && (usuario.search("@") == -1) && (dominio.search("@") == -1) &&
+            (usuario.search(" ") == -1) && (dominio.search(" ") == -1) && (dominio.search(".") != -1) &&
+            (dominio.indexOf(".") >= 1) && (dominio.lastIndexOf(".") < dominio.length - 1)) {
+
+            return true;
+        }
+
+        else {
+            return false;
+        }
+    }
+
+    // Validar CNPJ
+    function validarCNPJ(cnpj) {
+
+        cnpj = cnpj.replace(/[^\d]+/g, '');
+
+        if (cnpj == '') return false;
+
+        if (cnpj.length != 14)
+            return false;
+
+        // Elimina CNPJs invalidos conhecidos
+        if (cnpj == "00000000000000" ||
+            cnpj == "11111111111111" ||
+            cnpj == "22222222222222" ||
+            cnpj == "33333333333333" ||
+            cnpj == "44444444444444" ||
+            cnpj == "55555555555555" ||
+            cnpj == "66666666666666" ||
+            cnpj == "77777777777777" ||
+            cnpj == "88888888888888" ||
+            cnpj == "99999999999999")
+            return false;
+
+        // Valida DVs
+        tamanho = cnpj.length - 2
+        numeros = cnpj.substring(0, tamanho);
+        digitos = cnpj.substring(tamanho);
+        soma = 0;
+        pos = tamanho - 7;
+        for (i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2)
+                pos = 9;
+        }
+        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(0))
+            return false;
+
+        tamanho = tamanho + 1;
+        numeros = cnpj.substring(0, tamanho);
+        soma = 0;
+        pos = tamanho - 7;
+        for (i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2)
+                pos = 9;
+        }
+        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(1))
+            return false;
+
+        return true;
+
+    }
+
+    // Validação final e envio dos dados para o servidor 	
+    function Submit() {
+
+        // Atributos
+        var cnpj = document.getElementById('cnpj').value;
+        var email = document.getElementById('email').value;
+        var listaMsgmError = new Array();
+
+        // Result Funções
+        var emailValido = validacaoEmail(email);
+        var cnpjValido = validarCNPJ(cnpj);
+
+        // Verificador de Aprovação
+        var validator = 0;
+
+        if (cnpjValido == false) {
+            document.getElementById('cnpj-span').style = "color: red;";
+            document.getElementById('cnpj').style = "border-radius:0px;border-color: red;";
+            document.getElementById('cnpj').value = "";
+
+            listaMsgmError.push('CNPJ Inválido!');
+
+            validator = 1;
+
+        }
+
+        if (emailValido == false) {
+            document.getElementById('email-span').style = "color: red;";
+            document.getElementById('email').style = "border-radius:0px;border-color: red;";
+            document.getElementById('email').value = "";
+
+            listaMsgmError.push('Email Inválido!');
+
+            validator = 1;
+        }
+
+        if (validator == 1) {
+
+            // Listagem de Erros 
+
+            var Warnings = "";
+
+            for (var value in listaMsgmError) {
+                Warnings += "<br />" + listaMsgmError[value];
+            }
+
+            document.getElementById('msgmError').innerHTML = Warnings;
+            document.getElementById('divError').style.visibility = "visible";
+
+            // Redefinição Divs Força Senha
+            document.getElementById('forcaSenha1').className = "defaultSenha";
+            document.getElementById('forcaSenha2').className = "defaultSenha";
+            document.getElementById('forcaSenha3').className = "defaultSenha";
+            document.getElementById('forcaSenha4').className = "defaultSenha";
+            document.getElementById('forcaSenha5').className = "defaultSenha";
+
+            document.getElementById('combinacaoFeedback').innerHTML = "<font color=#e8e8e8 size='1'>Digite uma Senha</font>";
+        }
+
+    }
+
+    // Mascara CNPJ
+    function maskCNPJ(id) {
+
+        var cnpjOrigin = document.getElementById(id).value;
+
+        var cnpj = cnpjOrigin;
+
+
+        if (cnpj.length == 2 || cnpj.length == 6) {
+            cnpj = cnpj + ".";
+        }
+
+        if (cnpj.length == 10) {
+            cnpj = cnpj + "/";
+        }
+
+        if (cnpj.length == 15) {
+            cnpj = cnpj + "-";
+        }
+
+        if (cnpj.length > 15) {
+
+            cnpj = cnpj.substring(0, 2) + "." + cnpj.substring(3, 6) + "." + cnpj.substring(7, 10) + "/" + cnpj.substring(11, 15) + "-" + cnpj.substring(16, 18);
+        }
+
+        document.getElementById(id).value = cnpj;
+    }
+
+    // Campos Default
+    function limpaText(id) {
+        id == "email" ? limpaSpan('email-span') : limpaSpan('cnpj-span');
+        document.getElementById(id).style = "border-radius:0px;";
+        document.getElementById('divError').style.visibility = "hidden";
+
+        limpaSpan();
+    }
+
+    function limpaSpan(id) {
+        document.getElementById(id).style = "";
+    }
+
+
+    // Validando força da senha
+    function senhaValidacao(pass, div1, div2, div3, div4, div5) {
+
+        var confirmaSenha = document.getElementById('confirmaSenha').value;
+        var senha = document.getElementById(pass).value;
+        var entrada = 0;
+        var resultadoado;
+
+        if (senha != "") {
+
+            if (senha.length < 7) {
+                entrada = entrada - 1;
+            }
+            if (senha.length < 11) {
+                entrada = entrada - 1;
+            }
+            if (!senha.match(/[a-z_]/i) || !senha.match(/[0-9]/)) {
+                entrada = entrada - 1;
+            }
+            if (!senha.match(/\W/)) {
+                entrada = entrada - 1;
+            }
+
+        }
+        var verificaNull = 0;
+
+        if (senha == "") {
+            document.getElementById(div1).className = "defaultSenha";
+            document.getElementById(div2).className = "defaultSenha";
+            document.getElementById(div3).className = "defaultSenha";
+            document.getElementById(div4).className = "defaultSenha";
+            document.getElementById(div5).className = "defaultSenha";
+
+            document.getElementById('combinacaoFeedback').innerHTML = "<font color=#e8e8e8 size='1'>Digite uma Senha</font>";
+
+
+            verificaNull = 1;
+        }
+
+        if (entrada == 0 && verificaNull != 1) {
+            document.getElementById(div1).className = "forcaSenha";
+            document.getElementById(div2).className = "forcaSenha";
+            document.getElementById(div3).className = "forcaSenha";
+            document.getElementById(div4).className = "forcaSenha";
+            document.getElementById(div5).className = "forcaSenha";
+
+            document.getElementById('combinacaoFeedback').innerHTML = "<font color=#99C55D size='1'>Senha muito forte</font>";
+
+
+        } else if (entrada == -1) {
+            document.getElementById(div1).className = "forcaSenha";
+            document.getElementById(div2).className = "forcaSenha";
+            document.getElementById(div3).className = "forcaSenha";
+            document.getElementById(div4).className = "forcaSenha";
+            document.getElementById(div5).className = "defaultSenha";
+
+            document.getElementById('combinacaoFeedback').innerHTML = "<font color=#7F7FFF size='1'>Senha forte</font>";
+
+        } else if (entrada == -2) {
+
+            document.getElementById(div1).className = "forcaSenha";
+            document.getElementById(div2).className = "forcaSenha";
+            document.getElementById(div3).className = "forcaSenha";
+            document.getElementById(div4).className = "defaultSenha";
+            document.getElementById(div5).className = "defaultSenha";
+
+            document.getElementById('combinacaoFeedback').innerHTML = "<font color=#ffd64d size='1'>Senha regular</font>";
+
+        } else if (entrada == -3) {
+
+            document.getElementById(div1).className = "forcaSenha";
+            document.getElementById(div2).className = "forcaSenha";
+            document.getElementById(div3).className = "defaultSenha";
+            document.getElementById(div4).className = "defaultSenha";
+            document.getElementById(div5).className = "defaultSenha";
+
+            document.getElementById('combinacaoFeedback').innerHTML = "<font color=#FF5F55 size='1'>Senha fraca</font>";
+
+        } else if (entrada == -4) {
+
+            document.getElementById(div1).className = "forcaSenha";
+            document.getElementById(div2).className = "defaultSenha";
+            document.getElementById(div3).className = "defaultSenha";
+            document.getElementById(div4).className = "defaultSenha";
+            document.getElementById(div5).className = "defaultSenha";
+
+            document.getElementById('combinacaoFeedback').innerHTML = "<font color=#A04040 size='1'>Senha muito fraca</font>";
+        }
+
+
+
+        if (confirmaSenha != "") {
+            verificaSenha();
+        }
+
+    }
+
+    // Confirmação da Senha
+    function verificaSenha() {
+
+        var senha = document.getElementById('senha').value;
+        var confirmaSenha = document.getElementById('confirmaSenha').value;
+        var confirmacao = document.getElementById('confirmacao');
+
+        if (senha == confirmaSenha) {
+            confirmacao.innerHTML = "<font color=#99C55D size='1'>Senhas confirmadas</font>";
+        } else {
+
+            confirmacao.innerHTML = "<font color=#A04040 size='1'>Senhas diferentes</font>";
+        }
+    }
+
+</script>
+
+
+<!-- HTML - Página de Credênciamento -->
+
+<div>
+    <form method="post" id="FormCredenciamento">
+
+        <br />
+        <span class="span-format" id="senha-span">Nova Senha</span>
+        <br />
+
+        <span>
+            <input type="password" class = "input-text-password" style="border-radius:0px;" placeholder="Digite sua senha" name="senha" id="senha" onclick="limpaText('senha');" onkeyup="senhaValidacao('senha', 'forcaSenha1', 'forcaSenha2', 'forcaSenha3', 'forcaSenha4', 'forcaSenha5');">
+        </span><br/>
+
+        <!-- hidden="hidden" -->
+        <table id="verificaSenhaDivs" class="table">
+            <tr>
+                <td class="td">
+                    <div id="forcaSenha1" class="defaultSenha">&nbsp;</div>
+                </td>
+                <td class="td">
+                    <div id="forcaSenha2" class="defaultSenha">&nbsp;</div>
+                </td>
+                <td class="td">
+                    <div id="forcaSenha3" class="defaultSenha">&nbsp;</div>
+                </td>
+                <td class="td">
+                    <div id="forcaSenha4" class="defaultSenha">&nbsp;</div>
+                </td>
+                <td class="td">
+                    <div id="forcaSenha5" class="defaultSenha">&nbsp;</div>
+                </td>
+                <td class="td-right"><span id="combinacaoFeedback"></span></td>
+            </tr>
+        </table>
+
+        <span class="span-format" id="confirmaSenha-span">Confirmar Senha</span>
+        <br />
+
+        <span>
+        	<input type="password" class = "input-text-password" style="border-radius:0px;" placeholder="Confirme sua senha" name="confirmaSenha" id="confirmaSenha" onclick="limpaText('confirmaSenha');"  onkeyup="verificaSenha();">
+        </span><br />
+        <span id="confirmacao" class="confirmacao"></span>
+        <br />
+
+
+        <div class="alert alert-danger" style="visibility: hidden" id="divError">
+            <strong class="span-font">Atenção!</strong>
+            <span id="msgmError" class="span-font">Error<span>
+  		</div>
+  		
+  		<br />
+
+        <p><button type="button" class="w3-button w3-block w3-teal" onclick="Submit();">SALVAR</button></p>
+
+
+    </form>
+</div>
